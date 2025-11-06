@@ -1,8 +1,16 @@
-import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
+
+// ⚙️ Tentativa segura de importar o Tailwind plugin (para evitar erro em builds remotos)
+let tailwindcss;
+try {
+  tailwindcss = (await import("@tailwindcss/vite")).default;
+} catch {
+  console.warn("⚠️ Plugin '@tailwindcss/vite' não encontrado — build continuará sem ele.");
+  tailwindcss = () => ({ name: "noop-tailwindcss" });
+}
 
 const plugins = [react(), tailwindcss(), vitePluginManusRuntime()];
 
