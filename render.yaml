@@ -1,0 +1,29 @@
+# Arquivo de configuração Render.com
+# Define como o Render deve construir e servir seu app
+
+services:
+  - type: web
+    name: esoteric-consultations
+    env: node
+    plan: free
+
+    buildCommand: |
+      npm install --legacy-peer-deps --include=dev
+      npm run build
+
+    startCommand: npm run start
+
+    envVars:
+      - key: NODE_VERSION
+        value: 24.11.0
+      - key: NODE_ENV
+        value: production
+
+    buildFilter:
+      paths:
+        - package.json
+        - vite.config.ts
+        - client/**
+        - server/**
+        - shared/**
+        - dist/**
